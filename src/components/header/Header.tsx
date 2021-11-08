@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./Header.module.css";
 import logo from "../../assets/logo.svg";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
@@ -10,14 +10,32 @@ interface State extends LanguageState {}
 
 export const Header: React.FC = () => {
   const storeState = store.getState();
-  const state: State = {
+
+  const [state, setState] = useState<State>({
     language: storeState.language,
     languageList: storeState.languageList,
-  };
+  });
+
+  store.subscribe(() => {
+    const storeState = store.getState();
+    setState({
+      ...state,
+      language: storeState.language,
+      languageList: storeState.languageList,
+    });
+  });
 
   const menuClickHandler = (e: any) => {
-    const action = { type: "change_language", payload: e.key };
-    store.dispatch(action);
+    if (e.key === "new") {
+      const action = {
+        type: "add_language",
+        payload: { name: "Thai", code: "th" },
+      };
+      store.dispatch(action);
+    } else {
+      const action = { type: "change_language", payload: e.key };
+      store.dispatch(action);
+    }
   };
 
   return (
@@ -33,6 +51,7 @@ export const Header: React.FC = () => {
                 {state.languageList.map((l) => {
                   return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                 })}
+                <Menu.Item key="new">Add Language</Menu.Item>
               </Menu>
             }
             icon={<GlobalOutlined />}
