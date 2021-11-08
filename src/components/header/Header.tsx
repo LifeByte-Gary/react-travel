@@ -3,8 +3,23 @@ import styles from "./Header.module.css";
 import logo from "../../assets/logo.svg";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
+import store from "../../redux/store";
+import { LanguageState } from "../../redux/languageReducer";
+
+interface State extends LanguageState {}
 
 export const Header: React.FC = () => {
+  const storeState = store.getState();
+  const state: State = {
+    language: storeState.language,
+    languageList: storeState.languageList,
+  };
+
+  const menuClickHandler = (e: any) => {
+    const action = { type: "change_language", payload: e.key };
+    store.dispatch(action);
+  };
+
   return (
     <div className={styles["app-header"]}>
       {/* top-header */}
@@ -14,14 +29,15 @@ export const Header: React.FC = () => {
           <Dropdown.Button
             style={{ marginLeft: 15 }}
             overlay={
-              <Menu>
-                <Menu.Item>中文</Menu.Item>
-                <Menu.Item>English</Menu.Item>
+              <Menu onClick={menuClickHandler}>
+                {state.languageList.map((l) => {
+                  return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
+                })}
               </Menu>
             }
             icon={<GlobalOutlined />}
           >
-            语言
+            {state.language === "zh" ? "中文" : "English"}
           </Dropdown.Button>
           <Button.Group className={styles["button-group"]}>
             <Button>注册</Button>
