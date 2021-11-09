@@ -1,43 +1,27 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./Header.module.css";
 import logo from "../../assets/logo.svg";
 import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
-import store from "../../redux/store";
-import { LanguageState } from "../../redux/languageReducer";
 import { useTranslation } from "react-i18next";
-
-interface State extends LanguageState {}
+import {
+  changeLanguageActionCreator,
+  addLanguageActionCreator,
+} from "../../redux/language/languageActions";
+import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
 
-  const storeState = store.getState();
-
-  const [state, setState] = useState<State>({
-    language: storeState.language,
-    languageList: storeState.languageList,
-  });
-
-  store.subscribe(() => {
-    const storeState = store.getState();
-    setState({
-      ...state,
-      language: storeState.language,
-      languageList: storeState.languageList,
-    });
-  });
+  const language = useAppSelector((state) => state.language)
+  const languageList = useAppSelector((state) => state.languageList)
+  const dispatch = useAppDispatch()
 
   const menuClickHandler = (e: any) => {
     if (e.key === "new") {
-      const action = {
-        type: "add_language",
-        payload: { name: "Thai", code: "th" },
-      };
-      store.dispatch(action);
+      dispatch(addLanguageActionCreator("Thai", "th"));
     } else {
-      const action = { type: "change_language", payload: e.key };
-      store.dispatch(action);
+      dispatch(changeLanguageActionCreator(e.key));
     }
   };
 
@@ -51,7 +35,7 @@ export const Header: React.FC = () => {
             style={{ marginLeft: 15 }}
             overlay={
               <Menu onClick={menuClickHandler}>
-                {state.languageList.map((l) => {
+                {languageList.map((l) => {
                   return <Menu.Item key={l.code}>{l.name}</Menu.Item>;
                 })}
                 <Menu.Item key="new">Add Language</Menu.Item>
@@ -59,7 +43,7 @@ export const Header: React.FC = () => {
             }
             icon={<GlobalOutlined />}
           >
-            {state.language === "zh" ? "中文" : "English"}
+            {language === "zh" ? "中文" : "English"}
           </Dropdown.Button>
           <Button.Group className={styles["button-group"]}>
             <Button>{t("header.register")}</Button>

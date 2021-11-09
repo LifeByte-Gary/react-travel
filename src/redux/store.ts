@@ -1,6 +1,8 @@
 import { createStore } from "redux";
-import languageReducer from "./languageReducer";
+import languageReducer from "./language/languageReducer";
 
-const store = createStore(languageReducer);
+export const store = createStore(languageReducer);
 
-export default store;
+// Infer the `RootState` and `AppDispatch` types from the store itself
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch
