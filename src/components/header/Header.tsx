@@ -13,8 +13,8 @@ import {useAppSelector, useAppDispatch} from '../../redux/hooks'
 export const Header: React.FC = () => {
   const { t } = useTranslation();
 
-  const language = useAppSelector((state) => state.language)
-  const languageList = useAppSelector((state) => state.languageList)
+  const language = useAppSelector((state) => state.language.language)
+  const languageList = useAppSelector((state) => state.language.languageList);
   const dispatch = useAppDispatch()
 
   const menuClickHandler = (e: any) => {
