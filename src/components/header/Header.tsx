@@ -5,24 +5,26 @@ import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
-  changeLanguageActionCreator,
-  addLanguageActionCreator,
-} from "../../redux/language/languageActions";
+  languageSlice,
+  changeCurrentLanguage,
+} from "../../redux/language/languageSlice";
 import { useAppSelector } from "../../redux/hooks";
 import { useDispatch } from "react-redux";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
 
-  const language = useAppSelector((state) => state.language.language);
+  const currentLanguage = useAppSelector(
+    (state) => state.language.currentLanguage
+  );
   const languageList = useAppSelector((state) => state.language.languageList);
   const dispatch = useDispatch();
 
   const menuClickHandler = (e: any) => {
     if (e.key === "new") {
-      dispatch(addLanguageActionCreator("Thai", "th"));
+      dispatch(languageSlice.actions.addLanguage({ name: "Thai", code: "th" }));
     } else {
-      dispatch(changeLanguageActionCreator(e.key));
+      dispatch(changeCurrentLanguage(e.key));
     }
   };
 
@@ -44,7 +46,7 @@ export const Header: React.FC = () => {
             }
             icon={<GlobalOutlined />}
           >
-            {language === "zh" ? "中文" : "English"}
+            {currentLanguage === "zh" ? "中文" : "English"}
           </Dropdown.Button>
           <Button.Group className={styles["button-group"]}>
             <Button>{t("header.register")}</Button>
