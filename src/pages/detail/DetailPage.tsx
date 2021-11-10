@@ -1,8 +1,9 @@
 import React from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export const DetailPage: React.FC = (props) => {
-  const params = useParams();
+  const { id } = useParams();
 
-  return <h1>Product ID: {params.id}</h1>;
+  return <h1>Product ID: {id}</h1>;
 };
