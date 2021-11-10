@@ -1,5 +1,8 @@
-import i18n from "i18next";
-import { CHANGE_LANGUAGE, ADD_LANGUAGE, LanguageActionType } from "./languageActions";
+import {
+  CHANGE_LANGUAGE,
+  ADD_LANGUAGE,
+  LanguageAction,
+} from "./languageActions";
 
 interface LanguageState {
   language: "en" | "zh";
@@ -14,11 +17,9 @@ const defaultState: LanguageState = {
   ],
 };
 
-const languageReducer = (state = defaultState, action: LanguageActionType) => {
+const languageReducer = (state = defaultState, action: LanguageAction) => {
   switch (action.type) {
     case CHANGE_LANGUAGE:
-      i18n.changeLanguage(action.payload);
-
       return { ...state, language: action.payload };
 
     case ADD_LANGUAGE:
