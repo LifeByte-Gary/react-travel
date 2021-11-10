@@ -8,8 +8,7 @@ import {
   languageSlice,
   changeCurrentLanguage,
 } from "../../redux/language/languageSlice";
-import { useAppSelector } from "../../redux/hooks";
-import { useDispatch } from "react-redux";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
@@ -18,7 +17,7 @@ export const Header: React.FC = () => {
     (state) => state.language.currentLanguage
   );
   const languageList = useAppSelector((state) => state.language.languageList);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const menuClickHandler = (e: any) => {
     if (e.key === "new") {

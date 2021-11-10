@@ -1,12 +1,12 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import recommendedProductsReducer from "./recommendedProducts/recommendedProductsReducer";
 import { actionLog } from "./middlewares/actionLog";
 import { languageSlice } from "./language/languageSlice";
 import { productDetailSlice } from "./product/productDetailSlice";
+import { recommendedProductsSlice } from "./product/recommendedProductsSlice";
 
 const rootReducer = combineReducers({
   language: languageSlice.reducer,
-  recommendProducts: recommendedProductsReducer,
+  recommendedProducts: recommendedProductsSlice.reducer,
   productDetail: productDetailSlice.reducer,
 });
 
