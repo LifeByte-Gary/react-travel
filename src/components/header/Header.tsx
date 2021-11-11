@@ -9,9 +9,11 @@ import {
   changeCurrentLanguage,
 } from "../../redux/language/languageSlice";
 import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useNavigate } from "react-router";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
   const currentLanguage = useAppSelector(
     (state) => state.language.currentLanguage
@@ -61,6 +63,9 @@ export const Header: React.FC = () => {
         <Input.Search
           placeholder={"请输入旅游目的地、主题、或关键字"}
           className={styles["search-input"]}
+          onSearch={(keywords) => {
+            navigate(`/search/${keywords}`);
+          }}
         />
       </Layout.Header>
       <Menu mode={"horizontal"} className={styles["main-menu"]}>
