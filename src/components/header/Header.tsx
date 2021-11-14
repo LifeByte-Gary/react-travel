@@ -48,7 +48,6 @@ export const Header: React.FC = () => {
   const onLogOut = () => {
     dispatch(AuthSlice.actions.logOut());
     navigate("/");
-    // window.location.reload();
   };
 
   return (
