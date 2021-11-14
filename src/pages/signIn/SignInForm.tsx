@@ -1,9 +1,24 @@
 import { Form, Input, Button, Checkbox } from "antd";
+import { useEffect } from "react";
+import { useNavigate } from "react-router";
+import { signIn } from "../../redux/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import styles from "./SignInForm.module.css";
 
 export const SignInForm = () => {
+  const { loading, error, token } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [navigate, token]);
+
   const onFinish = (values: any) => {
     console.log("Success:", values);
+    dispatch(signIn({ email: values.username, password: values.password }));
   };
 
   const onFinishFailed = (errorInfo: any) => {
@@ -46,7 +61,7 @@ export const SignInForm = () => {
       </Form.Item>
 
       <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-        <Button type="primary" htmlType="submit">
+        <Button type="primary" htmlType="submit" loading={loading}>
           Submit
         </Button>
       </Form.Item>

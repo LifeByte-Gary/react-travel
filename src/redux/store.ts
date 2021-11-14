@@ -4,12 +4,14 @@ import { languageSlice } from "./language/languageSlice";
 import { productDetailSlice } from "./product/productDetailSlice";
 import { recommendedProductsSlice } from "./product/recommendedProductsSlice";
 import { productSearchSlice } from "./product/productSearchSlice";
+import { AuthSlice } from "./auth/authSlice";
 
 const rootReducer = combineReducers({
   language: languageSlice.reducer,
   recommendedProducts: recommendedProductsSlice.reducer,
   productDetail: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer,
+  auth: AuthSlice.reducer,
 });
 
 export const store = configureStore({
