@@ -1,6 +1,6 @@
 import React from "react";
+import { AuthLayout } from "../../layouts/authLayout";
 
 export const SignInPage: React.FC = (props) => {
-  console.log(props);
-  return <h1>Sign in page</h1>;
+  return <AuthLayout></AuthLayout>;
 };

@@ -50,8 +50,12 @@ export const Header: React.FC = () => {
             {currentLanguage === "zh" ? "中文" : "English"}
           </Dropdown.Button>
           <Button.Group className={styles["button-group"]}>
-            <Button>{t("header.register")}</Button>
-            <Button>{t("header.signin")}</Button>
+            <Button onClick={() => navigate("/register")}>
+              {t("header.register")}
+            </Button>
+            <Button onClick={() => navigate("/sign-in")}>
+              {t("header.signin")}
+            </Button>
           </Button.Group>
         </div>
       </div>

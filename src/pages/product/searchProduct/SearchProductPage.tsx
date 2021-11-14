@@ -1,10 +1,11 @@
 import React, { useEffect } from "react";
 import styles from "./SearchProductPage.module.css";
-import { Header, Footer, FilterArea, ProductList } from "../../../components";
+import { FilterArea, ProductList } from "../../../components";
 import { useLocation, useParams } from "react-router";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { searchProduct } from "../../../redux/product/productSearchSlice";
 import { Spin } from "antd";
+import { MainLayout } from "../../../layouts/mainLayout";
 
 export const SearchProductPage: React.FC = () => {
   const { keywords } = useParams();
@@ -42,24 +43,20 @@ export const SearchProductPage: React.FC = () => {
   }
 
   return (
-    <>
-      <Header />
-      <div className={styles["page-content"]}>
-        {/* Filter */}
-        <div className={styles["product-list-container"]}>
-          <FilterArea />
-        </div>
-
-        {/* Product list */}
-        <div className={styles["product-list-container"]}>
-          <ProductList
-            data={productList}
-            paging={pagination}
-            onPageChange={onPageChange}
-          />
-        </div>
+    <MainLayout>
+      {/* Filter */}
+      <div className={styles["product-list-container"]}>
+        <FilterArea />
       </div>
-      <Footer />
-    </>
+
+      {/* Product list */}
+      <div className={styles["product-list-container"]}>
+        <ProductList
+          data={productList}
+          paging={pagination}
+          onPageChange={onPageChange}
+        />
+      </div>
+    </MainLayout>
   );
 };
