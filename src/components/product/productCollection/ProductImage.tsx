@@ -18,7 +18,7 @@ export const ProductImage: React.FC<PropsType> = ({
   title,
 }) => {
   return (
-    <Link to={`/detail/${id}`}>
+    <Link to={`/products/${id}`}>
       {size === "large" ? (
         <Image src={imageSrc} height={285} width={490} />
       ) : (

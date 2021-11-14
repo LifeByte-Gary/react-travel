@@ -1,5 +1,6 @@
 import React from "react";
+import { AuthLayout } from "../../layouts/authLayout"; 
 
 export const RegisterPage: React.FC = (props) => {
-  return <h1>Register page</h1>;
+  return <AuthLayout></AuthLayout>;
 };

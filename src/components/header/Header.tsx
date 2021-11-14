@@ -5,24 +5,27 @@ import { Layout, Typography, Input, Menu, Button, Dropdown } from "antd";
 import { GlobalOutlined } from "@ant-design/icons";
 import { useTranslation } from "react-i18next";
 import {
-  changeLanguageActionCreator,
-  addLanguageActionCreator,
-} from "../../redux/language/languageActions";
-import { useAppSelector } from "../../redux/hooks";
-import { useDispatch } from "react-redux";
+  languageSlice,
+  changeCurrentLanguage,
+} from "../../redux/language/languageSlice";
+import { useAppSelector, useAppDispatch } from "../../redux/hooks";
+import { useNavigate } from "react-router";
 
 export const Header: React.FC = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate();
 
-  const language = useAppSelector((state) => state.language.language);
+  const currentLanguage = useAppSelector(
+    (state) => state.language.currentLanguage
+  );
   const languageList = useAppSelector((state) => state.language.languageList);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const menuClickHandler = (e: any) => {
     if (e.key === "new") {
-      dispatch(addLanguageActionCreator("Thai", "th"));
+      dispatch(languageSlice.actions.addLanguage({ name: "Thai", code: "th" }));
     } else {
-      dispatch(changeLanguageActionCreator(e.key));
+      dispatch(changeCurrentLanguage(e.key));
     }
   };
 
@@ -44,11 +47,15 @@ export const Header: React.FC = () => {
             }
             icon={<GlobalOutlined />}
           >
-            {language === "zh" ? "中文" : "English"}
+            {currentLanguage === "zh" ? "中文" : "English"}
           </Dropdown.Button>
           <Button.Group className={styles["button-group"]}>
-            <Button>{t("header.register")}</Button>
-            <Button>{t("header.signin")}</Button>
+            <Button onClick={() => navigate("/register")}>
+              {t("header.register")}
+            </Button>
+            <Button onClick={() => navigate("/sign-in")}>
+              {t("header.signin")}
+            </Button>
           </Button.Group>
         </div>
       </div>
@@ -60,6 +67,9 @@ export const Header: React.FC = () => {
         <Input.Search
           placeholder={"请输入旅游目的地、主题、或关键字"}
           className={styles["search-input"]}
+          onSearch={(keywords) => {
+            navigate(`/search/${keywords}`);
+          }}
         />
       </Layout.Header>
       <Menu mode={"horizontal"} className={styles["main-menu"]}>

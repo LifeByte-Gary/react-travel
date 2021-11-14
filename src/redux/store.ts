@@ -1,18 +1,23 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import languageReducer from "./language/languageReducer";
-import recommendedProductsReducer from "./recommendedProducts/recommendedProductsReducer";
-import thunk from "redux-thunk";
+import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { actionLog } from "./middlewares/actionLog";
+import { languageSlice } from "./language/languageSlice";
+import { productDetailSlice } from "./product/productDetailSlice";
+import { recommendedProductsSlice } from "./product/recommendedProductsSlice";
+import { productSearchSlice } from "./product/productSearchSlice";
 
 const rootReducer = combineReducers({
-  language: languageReducer,
-  recommendProducts: recommendedProductsReducer,
+  language: languageSlice.reducer,
+  recommendedProducts: recommendedProductsSlice.reducer,
+  productDetail: productDetailSlice.reducer,
+  productSearch: productSearchSlice.reducer,
 });
 
-export const store = createStore(
-  rootReducer,
-  applyMiddleware(thunk, actionLog)
-);
+export const store = configureStore({
+  reducer: rootReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(actionLog),
+  devTools: true,
+});
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
