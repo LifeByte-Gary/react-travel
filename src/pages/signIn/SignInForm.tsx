@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import styles from "./SignInForm.module.css";
 
 export const SignInForm = () => {
-  const { loading, error, token } = useAppSelector((state) => state.auth);
+  const { loading, token } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
