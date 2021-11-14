@@ -1,9 +1,22 @@
 import { Form, Input, Button, Checkbox } from "antd";
 import styles from "./RegisterForm.module.css";
+import axios from "axios";
+import { useNavigate } from "react-router";
 
 export const RegisterForm = () => {
-  const onFinish = (values: any) => {
-    console.log("Success:", values);
+  const navigate = useNavigate();
+
+  const onFinish = async (values: any) => {
+    try {
+      await axios.post("http://123.56.149.216:8080/auth/register", {
+        email: values.username,
+        password: values.password,
+        confirmPassword: values.confirm,
+      });
+      navigate("/sign-in");
+    } catch (error) {
+      alert("Failed to register.");
+    }
   };
 
   const onFinishFailed = (errorInfo: any) => {
