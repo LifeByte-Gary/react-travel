@@ -1,5 +1,12 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Outlet,
+  useLocation,
+  Navigate,
+} from "react-router-dom";
 import styles from "./App.module.css";
 import {
   HomePage,
@@ -7,9 +14,23 @@ import {
   SignInPage,
   ShowProductPage,
   SearchProductPage,
+  Cart,
 } from "./pages";
+import { useAppSelector } from "./redux/hooks";
+
+const PrivateOutlet = ({ isAuth }) => {
+  const location = useLocation();
+
+  return isAuth ? (
+    <Outlet />
+  ) : (
+    <Navigate to="/sign-in" state={{ from: location }} />
+  );
+};
 
 function App() {
+  const jwt = useAppSelector((state) => state.auth.token);
+
   return (
     <div className={styles.App}>
       <BrowserRouter>
@@ -22,6 +43,9 @@ function App() {
           </Route>
           <Route path="search" element={<SearchProductPage />}>
             <Route path=":keywords" element={<SearchProductPage />}></Route>
+          </Route>
+          <Route path="/" element={<PrivateOutlet isAuth={jwt} />}>
+            <Route path="/cart" element={<Cart />}></Route>
           </Route>
           <Route path="*" element={<h1>404 Not Found</h1>} />
         </Routes>
