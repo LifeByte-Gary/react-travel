@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   BrowserRouter,
   Routes,
@@ -16,7 +16,8 @@ import {
   SearchProductPage,
   Cart,
 } from "./pages";
-import { useAppSelector } from "./redux/hooks";
+import { useAppDispatch, useAppSelector } from "./redux/hooks";
+import { getCartItems } from "./redux/product/cartSlice";
 
 const PrivateOutlet = ({ isAuth }) => {
   const location = useLocation();
@@ -30,6 +31,14 @@ const PrivateOutlet = ({ isAuth }) => {
 
 function App() {
   const jwt = useAppSelector((state) => state.auth.token);
+
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getCartItems(jwt));
+    }
+  }, [dispatch, jwt]);
 
   return (
     <div className={styles.App}>

@@ -2,12 +2,23 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";
 import { getProductDetail } from "../../../redux/product/productDetailSlice";
-import { Spin, Row, Col, Divider, Typography, Anchor, Menu } from "antd";
+import {
+  Spin,
+  Row,
+  Col,
+  Divider,
+  Typography,
+  Anchor,
+  Menu,
+  Button,
+} from "antd";
 import styles from "./ShowProductPage.module.css";
 import { ProductIntro, ProductComments } from "../../../components";
 import { DatePicker } from "antd";
 import { commentMockData } from "./mockup";
 import { MainLayout } from "../../../layouts/mainLayout";
+import { ShoppingCartOutlined } from "@ant-design/icons";
+import { addCartItem } from "../../../redux/product/cartSlice";
 
 const { RangePicker } = DatePicker;
 
@@ -18,12 +29,17 @@ export const ShowProductPage: React.FC = () => {
   const error = useAppSelector((state) => state.productDetail.error);
   const product = useAppSelector((state) => state.productDetail.data);
 
+  const jwt = useAppSelector((state) => state.auth.token) as string;
+
+  const cartLoading = useAppSelector((state) => state.cart.loading);
+
   const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (id) dispatch(getProductDetail(id));
   }, [dispatch, id]);
 
+  // Render
   if (loading) {
     return (
       <Spin
@@ -59,6 +75,18 @@ export const ShowProductPage: React.FC = () => {
             />
           </Col>
           <Col span={11}>
+            <Button
+              style={{ marginTop: 50, marginBottom: 30, display: "block" }}
+              type="primary"
+              danger
+              loading={cartLoading}
+              onClick={() => {
+                dispatch(addCartItem({ jwt, touristRouteId: product.id }));
+              }}
+            >
+              <ShoppingCartOutlined />
+              Add to Cart
+            </Button>
             <RangePicker open style={{ marginTop: 20 }} />
           </Col>
         </Row>

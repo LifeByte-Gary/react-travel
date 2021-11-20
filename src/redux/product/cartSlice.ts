@@ -50,9 +50,11 @@ export const addCartItem = createAsyncThunk(
 
 export const clearCart = createAsyncThunk(
   "cart/clearCart",
-  async (params: { jwt: string; itemsIds: number[] }, thunkAPI) => {
+  async (params: { jwt: string; itemIds: number[] }, thunkAPI) => {
+    console.log("clear");
+
     return await axios.delete(
-      `hhttp://123.56.149.216:8080/api/shoppingCart/items/(${params.itemsIds.join(
+      `http://123.56.149.216:8080/api/shoppingCart/items/(${params.itemIds.join(
         ","
       )})`,
       {
@@ -68,47 +70,48 @@ export const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {},
-    extraReducers: (builder) => {
-      // getCartItems reducers
-      builder
-        .addCase(getCartItems.pending, (state, action) => {
-          state.loading = true;
-        })
-        .addCase(getCartItems.fulfilled, (state, action) => {
-          state.loading = false;
-          state.error = null;
-          state.items = action.payload;
-        })
-        .addCase(getCartItems.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        });
-      // clearCart reducers
-      builder
-        .addCase(addCartItem.pending, (state, action) => {
-          state.loading = true;
-        })
-        .addCase(addCartItem.fulfilled, (state, action) => {
-          state.loading = false;
-          state.error = null;
-          state.items = action.payload;
-        })
-        .addCase(addCartItem.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        });
-        // clearCartItems reducers
-      builder
-        .addCase(clearCart.pending, (state, action) => {
-          state.loading = true;
-        })
-        .addCase(clearCart.fulfilled, (state, action) => {
-          state.loading = false;
-          state.error = null;
-          state.items = [];
-        })
-        .addCase(clearCart.rejected, (state, action) => {
-          state.loading = false;
-          state.error = action.payload;
-        });
+  extraReducers: (builder) => {
+    // getCartItems reducers
+    builder
+      .addCase(getCartItems.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(getCartItems.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.items = action.payload;
+      })
+      .addCase(getCartItems.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    // clearCart reducers
+    builder
+      .addCase(addCartItem.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(addCartItem.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.items = action.payload;
+      })
+      .addCase(addCartItem.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+    // clearCartItems reducers
+    builder
+      .addCase(clearCart.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(clearCart.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+        state.items = [];
+      })
+      .addCase(clearCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
+  },
 });
