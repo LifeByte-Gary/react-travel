@@ -7,6 +7,7 @@ import { productSearchSlice } from "./product/productSearchSlice";
 import { AuthSlice } from "./auth/authSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
+import { cartSlice } from "./product/cartSlice";
 
 const rootReducer = combineReducers({
   language: languageSlice.reducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
   productDetail: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer,
   auth: AuthSlice.reducer,
+  cart: cartSlice.reducer,
 });
 
 const persistConfig = {
